@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Georgetown Pro Bono Coaching Log</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B3A6B;
+    --teal: #2A7F7F;
+    --teal-light: #e6f2f2;
+    --teal-accent: #4ABFBF;
+    --gold: #C9A84C;
+    --white: #ffffff;
+    --gray-soft: #F5F7FA;
+    --gray-mid: #cdd4e0;
+    --text-dark: #1a2a45;
+    --text-mid: #4a5a72;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    background: #eef1f7;
+    min-height: 100vh;
+    color: var(--text-dark);
+  }
+
+  body { padding: 28px 28px 60px; }
+
+  .page {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: 6px;
+    box-shadow: 0 6px 32px rgba(27,58,107,0.12);
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--navy);
+    padding: 24px 32px 20px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px 6px 0 0;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(74,191,191,0.1);
+    pointer-events: none;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    bottom: -20px; right: 80px;
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.09);
+    pointer-events: none;
+  }
+  .org-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.03em;
+    position: relative;
+  }
+  .org-name span { color: var(--teal-accent); }
+  .doc-title {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    position: relative;
+  }
+  .gold-line { width: 44px; height: 2px; background: var(--gold); margin: 10px 0 0; position: relative; }
+
+  /* ── Meta ── */
+  .meta-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--gray-mid);
+  }
+  .meta-group {
+    padding: 14px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .meta-group:first-child { border-right: 1px solid var(--gray-mid); }
+  .meta-field { display: flex; align-items: center; gap: 10px; }
+  .meta-label {
+    font-size: 10.5px;
+    font-weight: 500;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    white-space: nowrap;
+    min-width: 136px;
+  }
+  .meta-input {
+    flex: 1;
+    border: none;
+    border-bottom: 1.5px solid var(--teal-accent);
+    padding: 3px 2px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-dark);
+    background: transparent;
+    outline: none;
+    transition: border-color 0.2s;
+    min-width: 0;
+  }
+  .meta-input:focus { border-bottom-color: var(--navy); }
+
+  /* ── Table ── */
+  .table-wrap { width: 100%; overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    min-width: 540px;
+  }
+
+  col.c-num     { width: 5%; }
+  col.c-init    { width: 9%; }
+  col.c-contact { width: 18%; }
+  col.c-date    { width: 14%; }
+  col.c-type    { width: 12%; }
+  col.c-notes   { width: 33%; }
+  col.c-hrs     { width: 9%; }
+
+  thead tr { background: var(--navy); }
+  thead th {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.88);
+    padding: 11px 8px;
+    text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.07);
+    vertical-align: middle;
+  }
+  thead th:last-child { background: var(--teal); border-right: none; }
+
+  /* ── Client group header ── */
+  .client-header-row td { padding: 0 !important; border: none !important; background: transparent !important; }
+  .client-header-cell {
+    background: var(--navy) !important;
+    padding: 8px 16px !important;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-top: 3px solid var(--gold) !important;
+  }
+  .client-label {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .client-initials-display {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.65);
+    font-style: italic;
+  }
+  .client-subtotal {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .client-progress {
+    height: 4px; width: 72px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .client-progress-bar {
+    height: 100%;
+    background: var(--teal-accent);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+  .client-goal {
+    font-size: 10px;
+    color: rgba(255,255,255,0.38);
+    font-style: italic;
+    margin-left: auto;
+  }
+
+  /* ── Data rows ── */
+  tbody td {
+    border-bottom: 1px solid var(--gray-mid);
+    border-right: 1px solid var(--gray-mid);
+    padding: 0;
+    vertical-align: middle;
+  }
+  tbody td:last-child { border-right: none; }
+
+  tr[data-client="0"] { background: #e8f3f3; }
+  tr[data-client="1"] { background: #eef1f7; }
+  tr[data-client="2"] { background: #f0f7ee; }
+  tr[data-client="3"] { background: #f7f2e6; }
+  tr[data-client="0"]:hover,
+  tr[data-client="1"]:hover,
+  tr[data-client="2"]:hover,
+  tr[data-client="3"]:hover { filter: brightness(0.96); }
+
+  tbody td input, tbody td select {
+    width: 100%;
+    height: 32px;
+    border: none;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--text-dark);
+    padding: 0 7px;
+    outline: none;
+  }
+  tbody td input:focus, tbody td select:focus { background: rgba(74,191,191,0.13); }
+  tbody td input[type="number"] { text-align: center; }
+  tbody td input[type="date"]   { text-align: center; font-size: 11.5px; }
+
+  select {
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%232A7F7F'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+    padding-right: 20px !important;
+  }
+
+  /* ── Totals row ── */
+  .totals-row td { background: var(--navy) !important; border-color: var(--navy) !important; }
+  .totals-label {
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    text-align: right;
+    padding: 10px 12px;
+  }
+  .totals-value {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--teal-accent);
+    padding: 8px;
+  }
+
+  /* ── Footer / Actions ── */
+  .footer-note {
+    padding: 14px 32px 20px;
+    font-size: 10.5px;
+    color: var(--text-mid);
+    font-style: italic;
+    border-top: 2px solid var(--teal-light);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-note::before { content: '✦'; color: var(--gold); font-style: normal; font-size: 10px; flex-shrink: 0; }
+
+  .action-bar {
+    display: flex;
+    gap: 10px;
+    padding: 16px 32px;
+    background: var(--gray-soft);
+    border-top: 1px solid var(--gray-mid);
+    flex-wrap: wrap;
+    align-items: center;
+    border-radius: 0 0 6px 6px;
+  }
+  .action-bar span { font-size: 11px; color: var(--text-mid); margin-right: auto; font-style: italic; }
+  button {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-primary { background: var(--navy); color: var(--white); }
+  .btn-primary:hover { background: #24508f; }
+  .btn-danger  { background: var(--white); color: #c0392b; border: 1.5px solid #c0392b; }
+  .btn-danger:hover { background: #fdf0ef; }
+
+  @media print {
+    html, body { background: white; padding: 0; }
+    .action-bar { display: none; }
+    .page { box-shadow: none; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="org-name">Georgetown <span>Executive Leadership</span> Coaching Program</div>
+    <div class="doc-title">Pro Bono Coaching Log &nbsp;·&nbsp; ICF Credentialing Record</div>
+    <div class="gold-line"></div>
+  </div>
+
+  <div class="meta-section">
+    <div class="meta-group">
+      <div class="meta-field">
+        <span class="meta-label">Coach</span>
+        <input class="meta-input" type="text" placeholder="Name" id="coach-name">
+      </div>
+      <div class="meta-field">
+        <span class="meta-label">Learning Circle Advisor</span>
+        <input class="meta-input" type="text" placeholder="Advisor name" id="advisor-name">
+      </div>
+    </div>
+    <div class="meta-group">
+      <div class="meta-field">
+        <span class="meta-label">Start Date</span>
+        <input class="meta-input" type="date" id="start-date">
+      </div>
+      <div class="meta-field">
+        <span class="meta-label">End Date</span>
+        <input class="meta-input" type="date" id="end-date">
+      </div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table id="log-table">
+      <colgroup>
+        <col class="c-num"><col class="c-init"><col class="c-contact">
+        <col class="c-date"><col class="c-type"><col class="c-notes"><col class="c-hrs">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Initials</th>
+          <th>Contact Info<br><small style="opacity:.55;font-size:9px">Phone / Email</small></th>
+          <th>Session Date</th>
+          <th>Session Type</th>
+          <th>Notes / Topics</th>
+          <th>Hours</th>
+        </tr>
+      </thead>
+      <tbody id="log-body"></tbody>
+      <tfoot>
+        <tr class="totals-row">
+          <td colspan="6" class="totals-label">Total Pro Bono Hours</td>
+          <td class="totals-value" id="total-hrs">0.00</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="footer-note">
+    Pro bono hours count toward ICF ACC credentialing. Retain this log alongside signed coaching agreements and session notes.
+  </div>
+
+  <div class="action-bar">
+    <span>Changes save automatically in your browser</span>
+    <button class="btn-primary" onclick="window.print()">🖨 Print / Save PDF</button>
+    <button class="btn-danger"  onclick="clearAll()">Clear All</button>
+  </div>
+
+</div>
+<script>
+const SESSION_TYPES = ["","Discovery","1:1"];
+const STORAGE_KEY   = "georgetown_probono_log_shared";
+const CLIENTS       = 4;
+const SESSIONS_PER  = 10;
+
+function clientIndex(rowNum) { return Math.floor((rowNum - 1) / SESSIONS_PER); }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
+
+function buildClientHeader(c) {
+  const tr = document.createElement('tr');
+  tr.className = 'client-header-row';
+  tr.dataset.headerFor = c;
+  tr.innerHTML = `
+    <td colspan="7" class="client-header-cell">
+      <span class="client-label">Client ${c + 1}</span>
+      <span class="client-initials-display" id="header-initials-${c}"></span>
+      <span class="client-subtotal" id="subtotal-${c}">0.00 hrs</span>
+      <div class="client-progress"><div class="client-progress-bar" id="progress-${c}" style="width:0%"></div></div>
+      <span class="client-goal">Goal: ${SESSIONS_PER} hrs</span>
+    </td>`;
+  return tr;
+}
+
+function buildRow(idx, data = {}) {
+  const ci  = clientIndex(idx);
+  const num = ((idx - 1) % SESSIONS_PER) + 1;
+  const tr  = document.createElement("tr");
+  tr.dataset.idx    = idx;
+  tr.dataset.client = ci;
+  tr.innerHTML = `
+    <td><input type="text" value="${esc(data.num !== undefined ? data.num : num)}" oninput="save()"></td>
+    <td><input type="text" placeholder="A.B." maxlength="8" value="${esc(data.init||'')}" oninput="save(); refreshHeader(${ci})"></td>
+    <td><input type="text" placeholder="email or phone" value="${esc(data.contact||'')}" oninput="save()"></td>
+    <td><input type="date" value="${esc(data.date||'')}" oninput="save()"></td>
+    <td><select onchange="save()">${SESSION_TYPES.map(t=>`<option${t===data.type?' selected':''}>${t}</option>`).join('')}</select></td>
+    <td><input type="text" placeholder="Topics covered…" value="${esc(data.notes||'')}" oninput="save()"></td>
+    <td><input type="number" min="0" max="24" step="0.25" placeholder="0" value="${data.hrs||''}" oninput="recalc(); save()"></td>`;
+  return tr;
+}
+
+function getDataRows() {
+  return Array.from(document.querySelectorAll('#log-body tr[data-idx]'));
+}
+
+function refreshHeader(ci) {
+  const rows = document.querySelectorAll(`#log-body tr[data-client="${ci}"][data-idx]`);
+  let initials = '';
+  rows.forEach(r => {
+    const v = r.querySelectorAll('input')[1]?.value.trim();
+    if (v && !initials) initials = v;
+  });
+  const el = document.getElementById(`header-initials-${ci}`);
+  if (el) el.textContent = initials ? `· ${initials}` : '';
+}
+
+function recalc() {
+  const clientTotals = Array(CLIENTS).fill(0);
+  let grandTotal = 0;
+
+  getDataRows().forEach(tr => {
+    const ci  = parseInt(tr.dataset.client);
+    const val = parseFloat(tr.querySelector('input[type="number"]')?.value) || 0;
+    clientTotals[ci] += val;
+    grandTotal += val;
+  });
+
+  for (let c = 0; c < CLIENTS; c++) {
+    const sub = document.getElementById(`subtotal-${c}`);
+    const bar = document.getElementById(`progress-${c}`);
+    const pct = Math.min(100, (clientTotals[c] / SESSIONS_PER) * 100);
+    if (sub) {
+      sub.textContent = clientTotals[c].toFixed(2) + ' hrs';
+      sub.style.color = clientTotals[c] >= SESSIONS_PER ? '#4ABFBF' : '#C9A84C';
+    }
+    if (bar) bar.style.width = pct + '%';
+    refreshHeader(c);
+  }
+
+  document.getElementById('total-hrs').textContent = grandTotal.toFixed(2);
+}
+
+function save() {
+  const rows = getDataRows().map(tr => {
+    const inp = tr.querySelectorAll('input, select');
+    return { num: inp[0].value, init: inp[1].value, contact: inp[2].value,
+             date: inp[3].value, type: inp[4].value, notes: inp[5].value, hrs: inp[6].value };
+  });
+  const meta = {
+    coach:   document.getElementById('coach-name')?.value   || '',
+    advisor: document.getElementById('advisor-name')?.value || '',
+    start:   document.getElementById('start-date')?.value   || '',
+    end:     document.getElementById('end-date')?.value     || '',
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({rows, meta}));
+}
+
+function clearAll() {
+  if (!confirm('Clear all session data? This cannot be undone.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  init();
+}
+
+function init() {
+  const tbody = document.getElementById('log-body');
+  tbody.innerHTML = '';
+  let stored;
+  try { stored = JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch(e) {}
+  if (stored?.meta) {
+    const map = {'coach-name':'coach','advisor-name':'advisor','start-date':'start','end-date':'end'};
+    Object.entries(map).forEach(([id, key]) => {
+      const el = document.getElementById(id);
+      if (el && stored.meta[key]) el.value = stored.meta[key];
+    });
+  }
+  const rowData = stored?.rows || [];
+  for (let c = 0; c < CLIENTS; c++) {
+    tbody.appendChild(buildClientHeader(c));
+    for (let s = 0; s < SESSIONS_PER; s++) {
+      const idx = c * SESSIONS_PER + s + 1;
+      tbody.appendChild(buildRow(idx, rowData[idx - 1] || {}));
+    }
+  }
+  document.querySelectorAll('.meta-input').forEach(el => el.addEventListener('input', save));
+  recalc();
+}
+
+init();
+</script>
+</body>
+</html>
